@@ -41,8 +41,6 @@ public class GoogleApiHelper {
 
 	/**
 	 * Constructor initializes the Google Authorization Code Flow with CLIENT ID, SECRET, and SCOPE
-	 * 
-	 * @throws CommonException
 	 */
 	public GoogleApiHelper()
 	{

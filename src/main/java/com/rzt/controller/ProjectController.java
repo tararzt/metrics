@@ -1,21 +1,23 @@
 package com.rzt.controller;
 
 import java.util.List;
-import javax.websocket.server.PathParam;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.rzt.controller.base.APIResponse;
 import com.rzt.controller.base.BaseController;
-import com.rzt.exception.ActionFailureException;
-import com.rzt.schema_pojo.Project;
+import com.rzt.schemapojo.Project;
 import com.rzt.service.repository.ProjectRepo;
 
+/**
+ * Controller to Serve the requests related to Projects
+ */
 @Controller
 @RequestMapping( "/project" )
 public class ProjectController extends BaseController {
@@ -30,7 +32,7 @@ public class ProjectController extends BaseController {
 	@ResponseBody
 	public String createProject( @RequestBody Project project )
 	{
-		response = new APIResponse();
+		APIResponse response = new APIResponse();
 
 		try
 		{
@@ -44,7 +46,7 @@ public class ProjectController extends BaseController {
 			e.printStackTrace();
 		}
 		response.setData(project);
-		return jsonStringifyResponse();
+		return jsonStringifyResponse(response);
 
 	}
 
@@ -57,7 +59,7 @@ public class ProjectController extends BaseController {
 	@ResponseBody
 	public String getAllProjects()
 	{
-		response = new APIResponse();
+		APIResponse response = new APIResponse();
 		List<Project> projects = null;
 		try
 		{
@@ -70,7 +72,7 @@ public class ProjectController extends BaseController {
 			e.printStackTrace();
 		}
 		response.setData(projects);
-		return jsonStringifyResponse();
+		return jsonStringifyResponse(response);
 
 	}
 
@@ -85,17 +87,10 @@ public class ProjectController extends BaseController {
 	@ResponseBody
 	public String updateProject( @RequestBody Project project )
 	{
-		response = new APIResponse();
+		APIResponse response = new APIResponse();
 		try
 		{
 			project = projectRepo.save(project);
-		}
-		catch( ActionFailureException e )
-		{
-			handleActionFailureException(e);
-			response.setServiced(false);
-			LOGGER.error(e);
-			e.printStackTrace();
 		}
 		catch( Exception e )
 		{
@@ -104,7 +99,7 @@ public class ProjectController extends BaseController {
 			e.printStackTrace();
 		}
 		response.setData(project);
-		return jsonStringifyResponse();
+		return jsonStringifyResponse(response);
 	}
 
 	/**
@@ -112,12 +107,12 @@ public class ProjectController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping( produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+	@RequestMapping( value = "{/id}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET )
 	@ResponseBody
-	public String getProject( Integer id )
+	public String getProject( @PathVariable Integer id )
 	{
-		response = new APIResponse();
+		APIResponse response = new APIResponse();
 		Project project = null;
 		try
 		{
@@ -130,7 +125,7 @@ public class ProjectController extends BaseController {
 			e.printStackTrace();
 		}
 		response.setData(project);
-		return jsonStringifyResponse();
+		return jsonStringifyResponse(response);
 
 	}
 
@@ -143,9 +138,9 @@ public class ProjectController extends BaseController {
 	@RequestMapping( value = "/delete/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.DELETE )
 	@ResponseBody
-	public String deleteProject( @PathParam( value = "id" ) Integer id )
+	public String deleteProject( @PathVariable Integer id )
 	{
-		response = new APIResponse();
+		APIResponse response = new APIResponse();
 		Project project = new Project();
 		project.setId(id);
 		try
@@ -158,7 +153,7 @@ public class ProjectController extends BaseController {
 			LOGGER.error(e);
 			e.printStackTrace();
 		}
-		return jsonStringifyResponse();
+		return jsonStringifyResponse(response);
 
 	}
 

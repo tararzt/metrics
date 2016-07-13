@@ -39,6 +39,11 @@ public class InsufficientInputException extends Exception {
 		this.errorMessage = ErrorCode.INSUFFICIENT_INPUT;
 	}
 
+	public InsufficientInputException()
+	{
+		super(ErrorCode.INSUFFICIENT_INPUT);
+	}
+
 	public List<String> getFields()
 	{
 		return fields;

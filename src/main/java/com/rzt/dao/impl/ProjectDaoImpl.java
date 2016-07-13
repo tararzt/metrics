@@ -1,4 +1,4 @@
-package com.rzt.service.impl;
+package com.rzt.dao.impl;
 
 import org.springframework.stereotype.Service;
 

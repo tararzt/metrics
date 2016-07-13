@@ -13,21 +13,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.rzt.controller.base.APIResponse;
 import com.rzt.controller.base.BaseController;
 import com.rzt.exception.ActionFailureException;
-import com.rzt.schema_pojo.Employee;
-import com.rzt.service.EmployeeDao;
+import com.rzt.exception.InsufficientInputException;
+import com.rzt.schemapojo.Employee;
+import com.rzt.service.EmployeeService;
 import com.rzt.service.repository.EmployeeRepo;
 
+/**
+ * Controller to server the requests related to Employee
+ */
 @Controller
 @RequestMapping( "/employee" )
 public class EmployeeController extends BaseController {
 
-	Logger LOGGER = Logger.getLogger(EmployeeController.class);
+	Logger logger = Logger.getLogger(EmployeeController.class);
 
 	@Autowired
 	EmployeeRepo employeeRepo;
 
 	@Autowired
-	EmployeeDao employeeDao;
+	EmployeeService employeeService;
 
 	/**
 	 * Add Employee
@@ -38,22 +42,30 @@ public class EmployeeController extends BaseController {
 	@RequestMapping( value = "/create", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.PUT )
 	@ResponseBody
-	public String createEmployee( @RequestBody Employee employee )
+	public String addEmployee( @RequestBody Employee employee )
 	{
-		response = new APIResponse();
+		logger.info("Adding a new Employee...");
+		APIResponse response = new APIResponse();
 		try
 		{
-			employee = employeeRepo.save(employee);
+			Employee employeeAdded = employeeService.addEmployee(employee);
+			response.setData(employeeAdded);
+			logger.info("Adding a new Employee " + employeeAdded.getEmail() + " is completed");
+
+		}
+		catch( ActionFailureException e )
+		{
+			handleActionFailureException(response, e);
+		}
+		catch( InsufficientInputException e )
+		{
+			handleInsufficientInputException(response, e);
 		}
 		catch( Exception e )
 		{
-			// TODO Auto-generated catch block
-			response.setServiced(false);
-			LOGGER.error(e);
-			e.printStackTrace();
+			handleGlobalException(response, e);
 		}
-		response.setData(employee);
-		return jsonStringifyResponse();
+		return jsonStringifyResponse(response);
 	}
 
 	/**
@@ -65,27 +77,20 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String getAllEmployees()
 	{
-		response = new APIResponse();
+		logger.info("Getting all Active Employees...");
+		APIResponse response = new APIResponse();
 		List<Employee> employees = null;
 		try
 		{
-			employees = employeeRepo.findAll();
-		}
-		catch( ActionFailureException e )
-		{
-			handleActionFailureException(e);
-			response.setServiced(false);
-			LOGGER.error(e);
-			e.printStackTrace();
+			employees = employeeService.getActiveEmployees();
+			response.setData(employees);
+			logger.info("Getting all Active Employees completed.");
 		}
 		catch( Exception e )
 		{
-			response.setServiced(false);
-			LOGGER.error(e);
-			e.printStackTrace();
+			handleGlobalException(response, e);
 		}
-		response.setData(employees);
-		return jsonStringifyResponse();
+		return jsonStringifyResponse(response);
 
 	}
 
@@ -100,20 +105,29 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String updateEmployee( @RequestBody Employee employee )
 	{
-		response = new APIResponse();
+		logger.info("Updating Employee Deatils...");
+		APIResponse response = new APIResponse();
 		try
 		{
-			//employee = employeeDao.update(employee);
-			employee = employeeRepo.save(employee);
+			Employee updatedEmployee = employeeService.updateEmployee(employee);
+			response.setData(employee);
+			logger.info("Updating Employee " + updatedEmployee.getEmail() + " Deatils Completed.");
+
+		}
+		catch( ActionFailureException e )
+		{
+			handleActionFailureException(response, e);
+		}
+		catch( InsufficientInputException e )
+		{
+			handleInsufficientInputException(response, e);
 		}
 		catch( Exception e )
 		{
-			response.setServiced(false);
-			LOGGER.error(e);
-			e.printStackTrace();
+			handleGlobalException(response, e);
 		}
-		response.setData(employee);
-		return jsonStringifyResponse();
+
+		return jsonStringifyResponse(response);
 	}
 
 	/**
@@ -127,25 +141,24 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String getEmployee( @PathVariable Integer id )
 	{
-		response = new APIResponse();
+		APIResponse response = new APIResponse();
 		Employee employee = null;
 		try
 		{
 			employee = employeeRepo.findOne(id);
+			response.setData(employee);
+
 		}
 		catch( Exception e )
 		{
-			response.setServiced(false);
-			LOGGER.error(e);
-			e.printStackTrace();
+			handleGlobalException(response, e);
 		}
-		response.setData(employee);
-		return jsonStringifyResponse();
+		return jsonStringifyResponse(response);
 
 	}
 
 	/**
-	 * get Employee
+	 * delete Employee
 	 * 
 	 * @param id
 	 * @return
@@ -155,20 +168,18 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String deleteEmployee( @PathVariable Integer id )
 	{
-		response = new APIResponse();
-		Employee employee = new Employee();
-		employee.setId(id);
+		logger.info("Inactivating an Employee with the Id " + id + " ...");
+		APIResponse response = new APIResponse();
 		try
 		{
-			employeeRepo.delete(employee);
+			response.setData(employeeService.delete(id));
+			logger.info("Inactivating an Employee is Completed.");
 		}
 		catch( Exception e )
 		{
-			response.setServiced(false);
-			LOGGER.error(e);
-			e.printStackTrace();
+			handleGlobalException(response, e);
 		}
-		return jsonStringifyResponse();
+		return jsonStringifyResponse(response);
 
 	}
 

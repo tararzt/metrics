@@ -3,7 +3,7 @@ package com.rzt.service.repository;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
-import com.rzt.schema_pojo.Project;
+import com.rzt.schemapojo.Project;
 
 @Component
 public interface ProjectRepo extends CrudRepository<Project, Integer> {

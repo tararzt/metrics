@@ -1,4 +1,4 @@
-package com.rzt.service;
+package com.rzt.dao;
 
 public interface ProjectDao {
 

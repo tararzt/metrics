@@ -1,6 +1,6 @@
-package com.rzt.service;
+package com.rzt.dao;
 
-import com.rzt.schema_pojo.Employee;
+import com.rzt.schemapojo.Employee;
 
 public interface EmployeeDao {
 

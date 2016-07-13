@@ -6,21 +6,18 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import com.rzt.exception.ActionFailureException;
 import com.rzt.exception.InsufficientInputException;
-import com.rzt.schema_pojo.Employee;
+import com.rzt.schemapojo.Employee;
 import com.rzt.utils.JSONUtil;
 import com.rzt.utils.SessionKey;
 
 public class BaseController implements ServletRequestListener {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
-
-	protected APIResponse response = new APIResponse();
+	private static final Logger logger = Logger.getLogger(BaseController.class);
 
 	Long requestStartTimeMillies = null;
 	Long requestEndTimeMillies = null;
@@ -40,7 +37,7 @@ public class BaseController implements ServletRequestListener {
 	@Override
 	public void requestInitialized( ServletRequestEvent req )
 	{
-		// LOGGER.info("-----------------------------------------------------------");
+		// logger.info("-----------------------------------------------------------");
 		requestStartTimeMillies = System.currentTimeMillis();
 
 	}
@@ -49,30 +46,30 @@ public class BaseController implements ServletRequestListener {
 	public void requestDestroyed( ServletRequestEvent req )
 	{
 		requestEndTimeMillies = System.currentTimeMillis();
-		// LOGGER.info("Exec Time:\t " + (requestEndTimeMillies - requestStartTimeMillies) + " ms");
-		// LOGGER.info("-----------------------------------------------------------");
+		// logger.info("Exec Time:\t " + (requestEndTimeMillies - requestStartTimeMillies) + " ms");
+		// logger.info("-----------------------------------------------------------");
 	}
 
-	public void logServiceDetails()
+	public void logServiceDetails( APIResponse response )
 	{
-		LOGGER.info("-----------------------------------------------------------");
-		LOGGER.info("Req URI:\t " + response.getApiPath());
-		LOGGER.info("Remote Addr:\t" + getSerRequest().getRemoteAddr());
-		LOGGER.info("Serviced:\t " + response.getServiced());
+		logger.info("-----------------------------------------------------------");
+		logger.info("Req URI:\t " + response.getApiPath());
+		logger.info("Remote Addr:\t" + getSerRequest().getRemoteAddr());
+		logger.info("Serviced:\t " + response.getServiced());
 		if( response.getServiced() == false )
 		{
-			LOGGER.info(response.getErrorCode());
+			logger.info(response.getErrorCode());
 		}
 
 		requestEndTimeMillies = System.currentTimeMillis();
-		LOGGER.info("Exec Time:\t " + (requestEndTimeMillies - requestStartTimeMillies) + " ms");
-		LOGGER.info("-----------------------------------------------------------");
+		logger.info("Exec Time:\t " + (requestEndTimeMillies - requestStartTimeMillies) + " ms");
+		logger.info("-----------------------------------------------------------");
 	}
 
-	public String jsonStringifyResponse()
+	public String jsonStringifyResponse( APIResponse response )
 	{
 		response.setApiPath(getSerRequest().getRequestURI());
-		logServiceDetails();
+		logServiceDetails(response);
 		return JSONUtil.convertObjectToString(response, true);
 	}
 
@@ -88,32 +85,35 @@ public class BaseController implements ServletRequestListener {
 
 	}
 
-	public void handleActionFailureException( ActionFailureException e )
+	public void handleActionFailureException( APIResponse response, ActionFailureException e )
 	{
 		response.setErrorCode(e.getMessage());
 		response.setLogParameter("error", e.getValue());
 		response.setServiced(false);
+		logger.error(e);
 	}
 
-	public void handleInsufficientInputException( InsufficientInputException e )
+	public void handleInsufficientInputException( APIResponse response, InsufficientInputException e )
 	{
 		response.setErrorCode(e.getMessage());
 		response.setLogParameter("error", e.getFields());
 		response.setServiced(false);
+		logger.error(e);
 	}
 
-	public void handleGlobalException( Exception e )
+	public void handleGlobalException( APIResponse response, Exception e )
 	{
 		response.setServiced(false);
 		response.setErrorCode("common.server.error");
+		logger.error(e);
 	}
 
-	public void handleSecuredServices() throws IOException, ServletException
+	public void handleSecuredServices( APIResponse response ) throws IOException, ServletException
 	{
-		LOGGER.info("User is not Logged in, User must Login Inorder to Access: " + getSerRequest().getRequestURI());
-		this.response.setData(null);
-		this.response.setErrorCode("Unthorized Access");
-		getSerResponse().getOutputStream().println(this.jsonStringifyResponse());
+		logger.info("User is not Logged in, User must Login Inorder to Access: " + getSerRequest().getRequestURI());
+		response.setData(null);
+		response.setErrorCode("Unthorized Access");
+		getSerResponse().getOutputStream().println(this.jsonStringifyResponse(response));
 	}
 
 	public String getIpAddr()

@@ -1,10 +1,10 @@
-package com.rzt.service.impl;
+package com.rzt.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.rzt.dao.EmployeeDao;
 import com.rzt.exception.ActionFailureException;
-import com.rzt.schema_pojo.Employee;
-import com.rzt.service.EmployeeDao;
+import com.rzt.schemapojo.Employee;
 import com.rzt.service.repository.EmployeeRepo;
 
 @Service
