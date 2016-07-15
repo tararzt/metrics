@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.rzt.controller.base.APIResponse;
 import com.rzt.controller.base.BaseController;
-import com.rzt.repository.ProjectRepo;
+import com.rzt.dao.repository.ProjectRepo;
 import com.rzt.schemapojo.Project;
 import com.rzt.utils.ErrorCode;
 

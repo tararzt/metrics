@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.rzt.controller.base.APIResponse;
 import com.rzt.controller.base.BaseController;
+import com.rzt.dao.repository.EmployeeRepo;
 import com.rzt.exception.ActionFailureException;
 import com.rzt.exception.InsufficientInputException;
-import com.rzt.repository.EmployeeRepo;
 import com.rzt.schemapojo.Employee;
 import com.rzt.service.EmployeeService;
 

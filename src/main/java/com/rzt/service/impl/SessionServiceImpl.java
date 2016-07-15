@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.rzt.repository.UserCookieRepo;
+import com.rzt.dao.repository.UserCookieRepo;
 import com.rzt.schemapojo.Employee;
 import com.rzt.schemapojo.UserCookie;
 import com.rzt.service.SessionService;

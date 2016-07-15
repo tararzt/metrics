@@ -3,9 +3,9 @@ package com.rzt.dao.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rzt.dao.EmployeeDao;
+import com.rzt.dao.repository.EmployeeRepo;
 import com.rzt.exception.ActionFailureException;
 import com.rzt.schemapojo.Employee;
-import com.rzt.repository.EmployeeRepo;
 
 @Service
 public class EmployeeDaoImpl implements EmployeeDao {

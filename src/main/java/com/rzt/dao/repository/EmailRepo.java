@@ -1,4 +1,4 @@
-package com.rzt.repository;
+package com.rzt.dao.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import com.rzt.schemapojo.Email;

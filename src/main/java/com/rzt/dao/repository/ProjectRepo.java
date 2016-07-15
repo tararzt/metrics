@@ -1,4 +1,4 @@
-package com.rzt.repository;
+package com.rzt.dao.repository;
 
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
@@ -36,8 +36,8 @@ public interface ProjectRepo extends CrudRepository<Project, Integer> {
 
 	public Project findByNameAndClientAndIsActive( String name, String client, Boolean isActive );
 
-	public Project findByIdAndIsActive(Integer id, Boolean isActive);
+	public Project findByIdAndIsActive( Integer id, Boolean isActive );
 
-	public List<Project> findByIsActive(Boolean isActive);
+	public List<Project> findByIsActive( Boolean isActive );
 
 }

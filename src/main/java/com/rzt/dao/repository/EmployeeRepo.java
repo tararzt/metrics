@@ -1,4 +1,4 @@
-package com.rzt.repository;
+package com.rzt.dao.repository;
 
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
