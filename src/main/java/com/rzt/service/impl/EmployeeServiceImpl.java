@@ -2,16 +2,16 @@ package com.rzt.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rzt.exception.ActionFailureException;
 import com.rzt.exception.InsufficientInputException;
 import com.rzt.google.GoogleUserInfo;
+import com.rzt.repository.EmployeeRepo;
 import com.rzt.schemapojo.Employee;
 import com.rzt.service.EmailService;
 import com.rzt.service.EmployeeService;
-import com.rzt.repository.EmployeeRepo;
 import com.rzt.utils.ErrorCode;
 import com.rzt.utils.StringHelper;
 import com.rzt.utils.Utils;
@@ -25,7 +25,7 @@ import com.rzt.utils.Utils;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-	Logger logger = Logger.getLogger(EmployeeServiceImpl.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
 	@Autowired
 	EmployeeRepo employeeRepo;
@@ -44,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	{
 		Employee employee = employeeRepo.findByEmail(googleUserInfo.getEmail());
 
-		if(employee == null)
+		if( employee == null )
 			throw new ActionFailureException(ErrorCode.USER_NOT_FOUND);
 
 		employee.setLastLogin(new Date());
@@ -135,7 +135,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if( employee == null )
 			throw new ActionFailureException(ErrorCode.USER_NOT_FOUND);
 
-		employee.setActive(false);
+		employee.setIsActive(false);
 		employeeRepo.save(employee);
 		isInActivated = true;
 		return isInActivated;

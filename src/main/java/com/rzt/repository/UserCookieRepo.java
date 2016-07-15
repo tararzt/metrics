@@ -10,27 +10,27 @@ import com.rzt.schemapojo.UserCookie;
 @Transactional
 public interface UserCookieRepo extends CrudRepository<UserCookie, Integer> {
 
-    /**
-     * Find Cookie by Cookie String
-     * @param cookie
-     * @return
-     */
+	/**
+	 * Find Cookie by Cookie String
+	 * 
+	 * @param cookie
+	 * @return
+	 */
 	public UserCookie findByCookie( String cookie );
 
+	/**
+	 * Find Cookie by Cookie String and Employee Id
+	 * 
+	 * @param cookie
+	 * @param employeeId
+	 * @return
+	 */
+	public UserCookie findByCookieAndEmployeeId( String cookie, Integer employeeId );
 
-    /**
-     * Find Cookie by Cookie String and Employee Id
-     * @param cookie
-     * @param employeeId
-     * @return
-     */
-	public UserCookie findByCookieAndUserId( String cookie, Integer employeeId );
-
-
-    /**
-     *
-     * @param userCookie
-     */
-    public void Delete(UserCookie userCookie);
+	/**
+	 *
+	 * @param userCookie
+	 */
+	public void delete( UserCookie userCookie );
 
 }

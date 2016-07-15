@@ -2,7 +2,6 @@ package com.rzt.service.impl;
 
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rzt.exception.ActionFailureException;
@@ -70,7 +69,7 @@ public class ProjectServiceImpl implements ProjectService {
 			checkForDuplicateProject(project.getName(), project.getClient());
 
 		//Inactivate existing row on each update to maintain Versioning
-		existingProject.setActive(false);
+		existingProject.setIsActive(false);
 		projectRepo.save(existingProject);
 
 		//Create and insert a new row in Db
@@ -82,15 +81,17 @@ public class ProjectServiceImpl implements ProjectService {
 
 	/**
 	 * Delete project from DB -- Hard Delete
+	 * 
 	 * @param projectId
 	 * @return
 	 * @throws InsufficientInputException
-     */
-	public Boolean deleteProject( Integer projectId ) throws InsufficientInputException {
+	 */
+	public Boolean deleteProject( Integer projectId ) throws InsufficientInputException
+	{
 		Utils.mandatroyInputCheck(projectId);
 
 		Project project = projectRepo.findOne(projectId);
-		if(project == null)
+		if( project == null )
 			throw new ActionFailureException(ErrorCode.PROJECT_NOT_PRESENT);
 
 		projectRepo.delete(project);
@@ -101,18 +102,20 @@ public class ProjectServiceImpl implements ProjectService {
 
 	/**
 	 * Inactivate Project -- Soft Delete
+	 * 
 	 * @param projectId
 	 * @return
 	 * @throws InsufficientInputException
-     */
-	public Boolean endProject( Integer projectId ) throws InsufficientInputException {
+	 */
+	public Boolean endProject( Integer projectId ) throws InsufficientInputException
+	{
 		Utils.mandatroyInputCheck(projectId);
 
 		Project project = projectRepo.findOne(projectId);
-		if(project == null)
+		if( project == null )
 			throw new ActionFailureException(ErrorCode.PROJECT_NOT_PRESENT);
 
-		project.setActive(false);
+		project.setIsActive(false);
 		project.setEndDate(new Date());
 
 		projectRepo.save(project);
@@ -122,8 +125,9 @@ public class ProjectServiceImpl implements ProjectService {
 	/**
 	 *
 	 * @return
-     */
-	public List<Project> getAllActiveProjects(){
+	 */
+	public List<Project> getAllActiveProjects()
+	{
 		List<Project> projects = projectRepo.findByIsActive(true);
 		return projects;
 	}
@@ -140,6 +144,5 @@ public class ProjectServiceImpl implements ProjectService {
 		if( existingProject != null )
 			throw new ActionFailureException(ErrorCode.CLIENT_PROJECT_PRESENT);
 	}
-
 
 }

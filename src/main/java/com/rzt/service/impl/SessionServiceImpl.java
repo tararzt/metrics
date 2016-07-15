@@ -12,10 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.rzt.repository.UserCookieRepo;
 import com.rzt.schemapojo.Employee;
 import com.rzt.schemapojo.UserCookie;
 import com.rzt.service.SessionService;
-import com.rzt.repository.UserCookieRepo;
 import com.rzt.utils.CookieUtils;
 import com.rzt.utils.JSONUtil;
 import com.rzt.utils.SessionKey;
@@ -23,7 +23,7 @@ import com.rzt.utils.SessionKey;
 /**
  * Service implementation for session Handling
  */
-@Service( "sessionManagementService" )
+@Service
 @SuppressWarnings( "unchecked" )
 public class SessionServiceImpl implements SessionService {
 
@@ -39,7 +39,7 @@ public class SessionServiceImpl implements SessionService {
 		UserCookie cookie = null;
 		if( employee != null )
 		{
-			cookie = userCookieRepository.findByCookieAndUserId(sessionId, employee.getId());
+			cookie = userCookieRepository.findByCookieAndEmployeeId(sessionId, employee.getId());
 
 			if( cookie != null )
 			{
@@ -222,17 +222,18 @@ public class SessionServiceImpl implements SessionService {
 
 	/**
 	 * Delete Session details of User from DB
+	 * 
 	 * @param cookie
 	 * @param employee
-     */
+	 */
 	@Override
 	public void deleteSessionFromDB( String cookie, Employee employee )
 	{
-		UserCookie userCookie = userCookieRepository.findByCookieAndUserId(cookie, employee.getId());
+		UserCookie userCookie = userCookieRepository.findByCookieAndEmployeeId(cookie, employee.getId());
 
 		if( userCookie != null )
 		{
-			userCookieRepository.Delete(userCookie);
+			userCookieRepository.delete(userCookie);
 		}
 		logger.info("deleted Usercookie with cookie value from DB: " + cookie);
 	}

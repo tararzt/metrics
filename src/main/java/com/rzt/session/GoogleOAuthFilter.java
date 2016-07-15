@@ -9,7 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -18,6 +18,7 @@ import com.rzt.google.GoogleUserInfo;
 import com.rzt.schemapojo.Employee;
 import com.rzt.service.EmployeeService;
 import com.rzt.service.SessionService;
+import com.rzt.utils.ErrorCode;
 import com.rzt.utils.StringHelper;
 
 /**
@@ -25,7 +26,7 @@ import com.rzt.utils.StringHelper;
  */
 public class GoogleOAuthFilter implements Filter {
 
-	Logger logger = Logger.getLogger(GoogleOAuthFilter.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(GoogleOAuthFilter.class);
 
 	private GoogleApiHelper apiHelper;
 
@@ -73,7 +74,7 @@ public class GoogleOAuthFilter implements Filter {
 		}
 		catch( IOException e )
 		{
-			logger.error(e);
+			logger.error(ErrorCode.COMMON_EXCEPTION, e);
 
 		}
 

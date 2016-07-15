@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.rzt.exception.ActionFailureException;
 
 public class FileOperations {
 
-	private static final Logger LOGGER = LogManager.getLogger(FileOperations.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileOperations.class);
 
 	private String absolutePath;
 
@@ -48,11 +48,11 @@ public class FileOperations {
 				bw.write(data);
 			}
 
-			LOGGER.info("Successfully written data to the file - " + fileName);
+			logger.info("Successfully written data to the file - " + fileName);
 		}
 		catch( IOException e )
 		{
-			LOGGER.error("Error in writing to a file", e);
+			logger.error(ErrorCode.COMMON_EXCEPTION, e);
 			throw new ActionFailureException(e);
 		}
 		finally
@@ -65,7 +65,7 @@ public class FileOperations {
 				}
 				catch( IOException e )
 				{
-					LOGGER.error("Error in closing connections", e);
+					logger.error(ErrorCode.COMMON_EXCEPTION, e);
 					throw new ActionFailureException(e);
 				}
 			}
@@ -77,7 +77,7 @@ public class FileOperations {
 				}
 				catch( IOException e )
 				{
-					LOGGER.error("Error in closing conections", e);
+					logger.error(ErrorCode.COMMON_EXCEPTION, e);
 					throw new ActionFailureException(e);
 				}
 			}
@@ -92,11 +92,11 @@ public class FileOperations {
 		{
 			if( files.mkdirs() )
 			{
-				LOGGER.info("Directory created!");
+				logger.info("Directory created!");
 			}
 			else
 			{
-				LOGGER.error("Failed to create directories!");
+				logger.error("Failed to create directories!");
 				this.absolutePath = absolutePath;
 				return;
 			}

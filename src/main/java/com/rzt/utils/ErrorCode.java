@@ -25,6 +25,8 @@ public class ErrorCode {
 	public static final String CLIENT_PROJECT_PRESENT = "Project Already present for the same Client";
 	public static final String PROJECT_NOT_PRESENT = "Project not Present";
 
+	public static final String COMMON_EXCEPTION = "Exception has Occured!";
+
 	private ErrorCode()
 	{
 	}

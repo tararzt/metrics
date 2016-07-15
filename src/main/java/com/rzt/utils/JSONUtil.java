@@ -1,8 +1,7 @@
 package com.rzt.utils;
 
 import java.io.IOException;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rzt.exception.ActionFailureException;
@@ -16,7 +15,7 @@ import com.rzt.exception.ActionFailureException;
 
 public class JSONUtil {
 
-	private static final Logger LOGGER = LogManager.getLogger(JSONUtil.class.getName());
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(JSONUtil.class);
 
 	private JSONUtil()
 	{
@@ -46,7 +45,7 @@ public class JSONUtil {
 		}
 		catch( IOException e )
 		{
-			LOGGER.error("Json conversion failed", e);
+			logger.error("Json conversion failed", e);
 			throw new ActionFailureException(e.getMessage(), false);
 		}
 	}
@@ -66,7 +65,7 @@ public class JSONUtil {
 		}
 		catch( IOException e )
 		{
-			LOGGER.error("Json conversion failed", e);
+			logger.error("Json conversion failed", e);
 			throw new ActionFailureException(e.getMessage(), false);
 		}
 	}
@@ -91,7 +90,7 @@ public class JSONUtil {
 		}
 		catch( IOException e )
 		{
-			LOGGER.error("Json conversion failed", e);
+			logger.error("Json conversion failed", e);
 			throw new ActionFailureException(e.getMessage(), false);
 		}
 	}

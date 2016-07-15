@@ -1,7 +1,7 @@
 package com.rzt.controller;
 
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,7 @@ import com.rzt.controller.base.APIResponse;
 import com.rzt.controller.base.BaseController;
 import com.rzt.repository.ProjectRepo;
 import com.rzt.schemapojo.Project;
+import com.rzt.utils.ErrorCode;
 
 /**
  * Controller to Serve the requests related to Projects
@@ -22,7 +23,7 @@ import com.rzt.schemapojo.Project;
 @RequestMapping( "/project" )
 public class ProjectController extends BaseController {
 
-	Logger logger = Logger.getLogger(ProjectController.class);
+	static final org.slf4j.Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
 	@Autowired
 	ProjectRepo projectRepo;
@@ -41,7 +42,7 @@ public class ProjectController extends BaseController {
 		{
 			// TODO Auto-generated catch block
 			response.setServiced(false);
-			logger.error(e);
+			logger.error(ErrorCode.COMMON_EXCEPTION, e);
 			e.printStackTrace();
 		}
 		response.setData(project);
@@ -67,7 +68,7 @@ public class ProjectController extends BaseController {
 		catch( Exception e )
 		{
 			response.setServiced(false);
-			logger.error(e);
+			logger.error(ErrorCode.COMMON_EXCEPTION, e);
 			e.printStackTrace();
 		}
 		response.setData(projects);
@@ -94,7 +95,7 @@ public class ProjectController extends BaseController {
 		catch( Exception e )
 		{
 			response.setServiced(false);
-			logger.error(e);
+			logger.error(ErrorCode.COMMON_EXCEPTION, e);
 			e.printStackTrace();
 		}
 		response.setData(project);
@@ -120,7 +121,7 @@ public class ProjectController extends BaseController {
 		catch( Exception e )
 		{
 			response.setServiced(false);
-			logger.error(e);
+			logger.error(ErrorCode.COMMON_EXCEPTION, e);
 			e.printStackTrace();
 		}
 		response.setData(project);
@@ -149,7 +150,7 @@ public class ProjectController extends BaseController {
 		catch( Exception e )
 		{
 			response.setServiced(false);
-			logger.error(e);
+			logger.error(ErrorCode.COMMON_EXCEPTION, e);
 			e.printStackTrace();
 		}
 		return jsonStringifyResponse(response);

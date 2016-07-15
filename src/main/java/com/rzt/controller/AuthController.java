@@ -20,13 +20,15 @@ import com.rzt.utils.SessionKey;
 @Controller
 public class AuthController extends BaseController {
 
+	static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+
 	@Autowired
 	GoogleApiHelper googleApiHelper;
 
 	@Autowired
 	SessionService sessionService;
 
-	Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 	/**
 	 * Controller Service to get Google API Url

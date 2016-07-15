@@ -1,7 +1,7 @@
 package com.rzt.controller;
 
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -14,9 +14,9 @@ import com.rzt.controller.base.APIResponse;
 import com.rzt.controller.base.BaseController;
 import com.rzt.exception.ActionFailureException;
 import com.rzt.exception.InsufficientInputException;
+import com.rzt.repository.EmployeeRepo;
 import com.rzt.schemapojo.Employee;
 import com.rzt.service.EmployeeService;
-import com.rzt.repository.EmployeeRepo;
 
 /**
  * Controller to server the requests related to Employee
@@ -25,7 +25,7 @@ import com.rzt.repository.EmployeeRepo;
 @RequestMapping( "/employee" )
 public class EmployeeController extends BaseController {
 
-	Logger logger = Logger.getLogger(EmployeeController.class);
+	static final org.slf4j.Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
 	@Autowired
 	EmployeeRepo employeeRepo;

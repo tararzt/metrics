@@ -22,13 +22,15 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import com.rzt.exception.ActionFailureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HTTPUtil {
 
 	private static HttpClient httpClient = HttpClientBuilder.create().build();
 
-	private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.LogManager
-			.getLogger(HTTPUtil.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HttpClient.class);
+
 
 	private static final String NO_SERVER_RESPONSE = "Unable to get a response from server";
 	private static final String SERVER_RESPONSE = "Server responded with status code ";
@@ -52,14 +54,14 @@ public class HTTPUtil {
 		StatusLine statusLine = response.getStatusLine();
 		if( statusLine == null )
 		{
-			LOGGER.error(NO_SERVER_RESPONSE);
+			logger.error(NO_SERVER_RESPONSE);
 			throw new ActionFailureException(NO_SERVER_RESPONSE);
 		}
 
 		int statusCode = statusLine.getStatusCode();
 		if( statusCode < 200 || statusCode >= 300 )
 		{
-			LOGGER.error(SERVER_RESPONSE + statusCode + " : " + statusLine);
+			logger.error(SERVER_RESPONSE + statusCode + " : " + statusLine);
 			throw new ActionFailureException(SERVER_RESPONSE + statusCode + " : " + statusLine);
 		}
 
@@ -107,8 +109,6 @@ public class HTTPUtil {
 	 *            : URL
 	 * @param requestParams
 	 *            : POST request parameters
-	 * @param classType
-	 *            : Return type for the response
 	 * @param headers
 	 *            : Optional headers for request
 	 * @return <U>

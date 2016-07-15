@@ -6,7 +6,7 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import com.rzt.exception.ActionFailureException;
@@ -18,7 +18,7 @@ import com.rzt.utils.SessionKey;
 
 public class BaseController implements ServletRequestListener {
 
-	private static final Logger logger = Logger.getLogger(BaseController.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(BaseController.class.getName());
 
 	Long requestStartTimeMillies = null;
 	Long requestEndTimeMillies = null;
@@ -91,7 +91,7 @@ public class BaseController implements ServletRequestListener {
 		response.setErrorCode(e.getMessage());
 		response.setLogParameter("error", e.getValue());
 		response.setServiced(false);
-		logger.error(e);
+		logger.error(ErrorCode.COMMON_EXCEPTION, e);
 	}
 
 	public void handleInsufficientInputException( APIResponse response, InsufficientInputException e )
@@ -99,14 +99,14 @@ public class BaseController implements ServletRequestListener {
 		response.setErrorCode(e.getMessage());
 		response.setLogParameter("error", e.getFields());
 		response.setServiced(false);
-		logger.error(e);
+		logger.error(ErrorCode.COMMON_EXCEPTION, e);
 	}
 
 	public void handleGlobalException( APIResponse response, Exception e )
 	{
 		response.setServiced(false);
 		response.setErrorCode("common.server.error");
-		logger.error(e);
+		logger.error(ErrorCode.COMMON_EXCEPTION, e);
 	}
 
 	public void handleSecuredServices( APIResponse response ) throws IOException, ServletException

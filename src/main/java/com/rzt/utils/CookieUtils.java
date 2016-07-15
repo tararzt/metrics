@@ -6,8 +6,7 @@ package com.rzt.utils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author deepak
@@ -15,7 +14,8 @@ import org.apache.log4j.Logger;
  */
 public class CookieUtils {
 
-	private static final Logger LOGGER = LogManager.getLogger(CookieUtils.class.getName());
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(CookieUtils.class);
+
 	private static int rememberMeTokenValiditySeconds = 30 * 24 * 60 * 60;
 	private static int sessionTokenValiditySeconds = 45 * 60;
 
@@ -113,7 +113,7 @@ public class CookieUtils {
 		if( request != null && request.getCookies() != null )
 		{
 			Cookie[] cookies = request.getCookies();
-			LOGGER.debug("Fetching cookie ");
+			logger.debug("Fetching cookie ");
 			for( int i = 0; i < cookies.length; i++ )
 			{
 				Cookie cookie = cookies[i];

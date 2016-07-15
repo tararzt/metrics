@@ -89,21 +89,25 @@ public class Project {
 		this.totalBilling = billing;
 	}
 
-	@Column(name="created_date")
-	public Date getCreatedDate() {
+	@Column( name = "created_date" )
+	public Date getCreatedDate()
+	{
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate( Date createdDate )
+	{
 		this.createdDate = createdDate;
 	}
 
-	@Column(name="is_active")
-	public Boolean getActive() {
+	@Column( name = "is_active" )
+	public Boolean getIsActive()
+	{
 		return isActive;
 	}
 
-	public void setActive(Boolean active) {
+	public void setIsActive( Boolean active )
+	{
 		isActive = active;
 	}
 }

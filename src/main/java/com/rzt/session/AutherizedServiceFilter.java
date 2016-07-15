@@ -9,7 +9,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
+
+import org.apache.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
@@ -21,8 +22,9 @@ import com.rzt.utils.SessionKey;
 @Component
 public class AutherizedServiceFilter implements Filter {
 
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(AutherizedServiceFilter.class.getName());
+
 	private BaseController baseController;
-	private Logger LOGGER = LoggerFactory.getLogger(AutherizedServiceFilter.class);
 
 	@Override
 	public void destroy()
@@ -35,7 +37,7 @@ public class AutherizedServiceFilter implements Filter {
 	public void doFilter( ServletRequest serRequest, ServletResponse serResponse, FilterChain chain )
 			throws IOException, ServletException
 	{
-		LOGGER.info("Begin Secured Service Request Filter........");
+		logger.info("Begin Secured Service Request Filter........");
 		HttpServletRequest request = (HttpServletRequest) serRequest;
 		HttpServletResponse response = (HttpServletResponse) serResponse;
 
@@ -48,7 +50,7 @@ public class AutherizedServiceFilter implements Filter {
 		}
 		else
 		{
-			LOGGER.info("User is Logged in, " + request.getRequestURI() + " is authenticated to Access.");
+			logger.info("User is Logged in, " + request.getRequestURI() + " is authenticated to Access.");
 			chain.doFilter(request, response);
 		}
 	}

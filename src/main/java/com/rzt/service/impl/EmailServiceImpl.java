@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -13,12 +12,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.rzt.enums.EmailCode;
+import com.rzt.repository.EmailRepo;
+import com.rzt.repository.EmailTemplateRepo;
 import com.rzt.schemapojo.Email;
 import com.rzt.schemapojo.EmailTemplate;
 import com.rzt.schemapojo.Employee;
 import com.rzt.service.EmailService;
-import com.rzt.repository.EmailRepo;
-import com.rzt.repository.EmailTemplateRepo;
 import com.rzt.utils.CalendarUtil;
 import com.rzt.utils.StringHelper;
 
@@ -28,7 +27,7 @@ import com.rzt.utils.StringHelper;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
 
 	@Autowired
 	private JavaMailSenderImpl mailSender;
@@ -56,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
 	@Override
 	public void sendEmail( Employee toUser, String templateInternalName, Map<String, Object> attributes )
 	{
-		LOGGER.info("Email to : " + templateInternalName);
+		logger.info("Email to : " + templateInternalName);
 
 		EmailTemplate emailTemplate = emailTemplateRepo.findByInternalName(templateInternalName);
 		if( emailTemplate != null )
@@ -70,7 +69,7 @@ public class EmailServiceImpl implements EmailService {
 					formattedMessage);
 			if( helper == null )
 			{
-				LOGGER.error("MIME Helper was not instantiated.");
+				logger.error("MIME Helper was not instantiated.");
 			}
 			mailSender.send(message);
 
@@ -82,12 +81,12 @@ public class EmailServiceImpl implements EmailService {
 
 			emailRepo.save(email);
 
-			LOGGER.info("Email sent to : " + toUser.getEmail());
+			logger.info("Email sent to : " + toUser.getEmail());
 
 		}
 		else
 		{
-			LOGGER.info("Template not found...");
+			logger.info("Template not found...");
 		}
 	}
 
@@ -107,7 +106,7 @@ public class EmailServiceImpl implements EmailService {
 		}
 		catch( MessagingException e )
 		{
-			LOGGER.error("Failed to instantiate MIME Helper ", e);
+			logger.error("Failed to instantiate MIME Helper ", e);
 		}
 
 		return helper;

@@ -78,12 +78,12 @@ public class Employee implements Serializable {
 	}
 
 	@Column( name = "is_active" )
-	public Boolean getActive()
+	public Boolean getIsActive()
 	{
 		return isActive;
 	}
 
-	public void setActive( Boolean active )
+	public void setIsActive( Boolean active )
 	{
 		isActive = active;
 	}

@@ -1,9 +1,11 @@
 package com.rzt;
 
 import java.util.EnumSet;
+import java.util.Properties;
 import javax.servlet.DispatcherType;
-import org.apache.log4j.Logger;
 import org.jsondoc.spring.boot.starter.EnableJSONDoc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -13,6 +15,7 @@ import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableAsync;
 import com.rzt.google.GoogleApiAuthConfig;
 import com.rzt.session.AutherizedServiceFilter;
@@ -30,7 +33,7 @@ import com.rzt.session.GoogleOAuthFilter;
 		org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class } )
 public class AppBoot {
 
-	static Logger logger = Logger.getLogger(AppBoot.class);
+	static final Logger logger = LoggerFactory.getLogger(AppBoot.class);
 
 	@Autowired
 	private Environment env;
@@ -77,7 +80,6 @@ public class AppBoot {
 		return new GoogleApiAuthConfig(env);
 	}
 
-
 	/**
 	 * This filter looks into each service that expects the user to be authenticated in order to
 	 * process, and filter out with a valid response if the user is not logged in.
@@ -92,6 +94,33 @@ public class AppBoot {
 		registration.setOrder(4);
 		registration.addUrlPatterns("/*");
 		return registration;
+	}
+
+	/**
+	 * this is the email sender bean. the properties needed to initialize is placed in the
+	 * application.properties
+	 *
+	 * This bean is injected in EmailServiceImpl
+	 *
+	 * @return returns a JavaMailSender bean
+	 */
+	@Bean
+	JavaMailSenderImpl mailSender()
+	{
+		JavaMailSenderImpl mailSenderImpl = new JavaMailSenderImpl();
+		mailSenderImpl.setPort(Integer.parseInt(env.getProperty("javamail.port")));
+		mailSenderImpl.setHost(env.getProperty("javamail.host"));
+		mailSenderImpl.setUsername(env.getProperty("javamail.username"));
+		mailSenderImpl.setPassword(env.getProperty("javamail.password"));
+		Properties javaMailProperties = new Properties();
+		javaMailProperties.put("mail.transport.protocol", env.getProperty("javamail.protocol"));
+		javaMailProperties.put("mail.smtp.auth", env.getProperty("javamail.auth"));
+		javaMailProperties.put("mail.smtp.starttls.enable", env.getProperty("javamail.starttls.enable"));
+		javaMailProperties.put("mail.debug", env.getProperty("javamail.mail.debug"));
+
+		mailSenderImpl.setJavaMailProperties(javaMailProperties);
+
+		return mailSenderImpl;
 	}
 
 }
