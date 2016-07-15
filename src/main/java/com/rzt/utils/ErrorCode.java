@@ -21,6 +21,9 @@ public class ErrorCode {
 
 	public static final String NO_USER_LOGGED_IN = "User not found";
 	public static final String ACTIVE_EMPLOYEE_PRESENT = "An active employee is already present with the same emailId";
+	public static final String USER_NOT_LOGGED_IN = "User is not Logged in!";
+	public static final String CLIENT_PROJECT_PRESENT = "Project Already present for the same Client";
+	public static final String PROJECT_NOT_PRESENT = "Project not Present";
 
 	private ErrorCode()
 	{

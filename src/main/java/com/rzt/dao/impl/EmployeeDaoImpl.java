@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import com.rzt.dao.EmployeeDao;
 import com.rzt.exception.ActionFailureException;
 import com.rzt.schemapojo.Employee;
-import com.rzt.service.repository.EmployeeRepo;
+import com.rzt.repository.EmployeeRepo;
 
 @Service
 public class EmployeeDaoImpl implements EmployeeDao {

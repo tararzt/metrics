@@ -16,7 +16,7 @@ import com.rzt.exception.ActionFailureException;
 import com.rzt.exception.InsufficientInputException;
 import com.rzt.schemapojo.Employee;
 import com.rzt.service.EmployeeService;
-import com.rzt.service.repository.EmployeeRepo;
+import com.rzt.repository.EmployeeRepo;
 
 /**
  * Controller to server the requests related to Employee

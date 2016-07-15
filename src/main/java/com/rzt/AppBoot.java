@@ -15,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import com.rzt.google.GoogleApiAuthConfig;
+import com.rzt.session.AutherizedServiceFilter;
 import com.rzt.session.GoogleOAuthFilter;
 
 /**
@@ -36,8 +37,9 @@ public class AppBoot {
 
 	/**
 	 * Main Entry point of the application
+	 * 
 	 * @param args
-     */
+	 */
 	public static void main( String[] args )
 	{
 		SpringApplication application = new SpringApplication(AppBoot.class);
@@ -73,6 +75,23 @@ public class AppBoot {
 	public GoogleApiAuthConfig googleApiConfig()
 	{
 		return new GoogleApiAuthConfig(env);
+	}
+
+
+	/**
+	 * This filter looks into each service that expects the user to be authenticated in order to
+	 * process, and filter out with a valid response if the user is not logged in.
+	 *
+	 * @return
+	 */
+	@Bean
+	public FilterRegistrationBean serviceRequestFilter()
+	{
+		FilterRegistrationBean registration = new FilterRegistrationBean();
+		registration.setFilter(new AutherizedServiceFilter());
+		registration.setOrder(4);
+		registration.addUrlPatterns("/*");
+		return registration;
 	}
 
 }

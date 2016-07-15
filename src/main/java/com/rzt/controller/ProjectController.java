@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.rzt.controller.base.APIResponse;
 import com.rzt.controller.base.BaseController;
+import com.rzt.repository.ProjectRepo;
 import com.rzt.schemapojo.Project;
-import com.rzt.service.repository.ProjectRepo;
 
 /**
  * Controller to Serve the requests related to Projects
@@ -22,7 +22,7 @@ import com.rzt.service.repository.ProjectRepo;
 @RequestMapping( "/project" )
 public class ProjectController extends BaseController {
 
-	Logger LOGGER = Logger.getLogger(ProjectController.class);
+	Logger logger = Logger.getLogger(ProjectController.class);
 
 	@Autowired
 	ProjectRepo projectRepo;
@@ -33,7 +33,6 @@ public class ProjectController extends BaseController {
 	public String createProject( @RequestBody Project project )
 	{
 		APIResponse response = new APIResponse();
-
 		try
 		{
 			project = projectRepo.save(project);
@@ -42,7 +41,7 @@ public class ProjectController extends BaseController {
 		{
 			// TODO Auto-generated catch block
 			response.setServiced(false);
-			LOGGER.error(e);
+			logger.error(e);
 			e.printStackTrace();
 		}
 		response.setData(project);
@@ -68,7 +67,7 @@ public class ProjectController extends BaseController {
 		catch( Exception e )
 		{
 			response.setServiced(false);
-			LOGGER.error(e);
+			logger.error(e);
 			e.printStackTrace();
 		}
 		response.setData(projects);
@@ -95,7 +94,7 @@ public class ProjectController extends BaseController {
 		catch( Exception e )
 		{
 			response.setServiced(false);
-			LOGGER.error(e);
+			logger.error(e);
 			e.printStackTrace();
 		}
 		response.setData(project);
@@ -121,7 +120,7 @@ public class ProjectController extends BaseController {
 		catch( Exception e )
 		{
 			response.setServiced(false);
-			LOGGER.error(e);
+			logger.error(e);
 			e.printStackTrace();
 		}
 		response.setData(project);
@@ -150,7 +149,7 @@ public class ProjectController extends BaseController {
 		catch( Exception e )
 		{
 			response.setServiced(false);
-			LOGGER.error(e);
+			logger.error(e);
 			e.printStackTrace();
 		}
 		return jsonStringifyResponse(response);

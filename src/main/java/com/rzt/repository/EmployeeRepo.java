@@ -1,4 +1,4 @@
-package com.rzt.service.repository;
+package com.rzt.repository;
 
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;

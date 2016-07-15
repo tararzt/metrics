@@ -1,4 +1,4 @@
-package com.rzt.service.repository;
+package com.rzt.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;

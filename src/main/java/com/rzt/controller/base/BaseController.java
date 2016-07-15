@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.rzt.exception.ActionFailureException;
 import com.rzt.exception.InsufficientInputException;
 import com.rzt.schemapojo.Employee;
+import com.rzt.utils.ErrorCode;
 import com.rzt.utils.JSONUtil;
 import com.rzt.utils.SessionKey;
 
@@ -110,9 +111,9 @@ public class BaseController implements ServletRequestListener {
 
 	public void handleSecuredServices( APIResponse response ) throws IOException, ServletException
 	{
-		logger.info("User is not Logged in, User must Login Inorder to Access: " + getSerRequest().getRequestURI());
+		logger.error(ErrorCode.USER_NOT_LOGGED_IN);
 		response.setData(null);
-		response.setErrorCode("Unthorized Access");
+		response.setErrorCode(ErrorCode.USER_NOT_LOGGED_IN);
 		getSerResponse().getOutputStream().println(this.jsonStringifyResponse(response));
 	}
 
