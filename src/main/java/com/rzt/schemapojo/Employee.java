@@ -42,6 +42,10 @@ public class Employee implements Serializable {
 		this.lastLogin = new Date();
 	}
 
+	public Employee(){
+
+	}
+
 	@Id
 	@Column( name = "id", unique = true, nullable = false )
 	@GeneratedValue( strategy = GenerationType.AUTO )

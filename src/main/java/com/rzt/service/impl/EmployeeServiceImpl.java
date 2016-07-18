@@ -89,6 +89,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	/**
+	 * Service implmeentation to get all  EMployees
+	 */
+	@Override
+	public List<Employee> getAllEmployees()
+	{
+		return employeeRepo.findAll();
+	}
+
+	/**
 	 * Service to Update Employee Deatails
 	 * 
 	 * @throws InsufficientInputException
@@ -125,7 +134,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @throws InsufficientInputException
 	 */
 	@Override
-	public Boolean delete( Integer employeeId ) throws InsufficientInputException
+	public Boolean inActivate( Integer employeeId ) throws InsufficientInputException
 	{
 		Boolean isInActivated;
 		Utils.mandatroyInputCheck(employeeId);
@@ -139,6 +148,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeRepo.save(employee);
 		isInActivated = true;
 		return isInActivated;
+	}
+
+	@Override
+	public Boolean delete(Integer employeeId) throws InsufficientInputException {
+		Utils.mandatroyInputCheck(employeeId);
+
+		//Check if the Employee  is Present, if not throw an error message
+		Employee employee = employeeRepo.findOne(employeeId);
+		if( employee == null )
+			throw new ActionFailureException(ErrorCode.USER_NOT_FOUND);
+
+		employeeRepo.delete(employee);
+
+		return true;
+
 	}
 
 }

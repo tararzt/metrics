@@ -217,7 +217,6 @@ public class SessionServiceImpl implements SessionService {
 		}
 
 		userCookieRepository.save(cookie);
-
 	}
 
 	/**

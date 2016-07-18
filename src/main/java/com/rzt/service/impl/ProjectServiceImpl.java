@@ -43,12 +43,13 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	/**
-	 * Update Project Details mainintaing Version
+	 * Update Project Details maintaintaing Version. Everytime when the update request recieved, Inactivate the current row and insert a new row
 	 * 
 	 * @param project
 	 * @return
 	 * @throws InsufficientInputException
 	 */
+	@Override
 	public Project updateProject( Project project ) throws InsufficientInputException
 	{
 
@@ -80,12 +81,13 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	/**
-	 * Delete project from DB -- Hard Delete
+	 * Delete project from DB -- Hard Delete, Delete the row from DB
 	 * 
 	 * @param projectId
 	 * @return
 	 * @throws InsufficientInputException
 	 */
+	@Override
 	public Boolean deleteProject( Integer projectId ) throws InsufficientInputException
 	{
 		Utils.mandatroyInputCheck(projectId);
@@ -101,12 +103,13 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	/**
-	 * Inactivate Project -- Soft Delete
+	 * Inactivate Project -- Soft Delete. Make the Project Inactive and Update the End Date
 	 * 
 	 * @param projectId
 	 * @return
 	 * @throws InsufficientInputException
 	 */
+	@Override
 	public Boolean endProject( Integer projectId ) throws InsufficientInputException
 	{
 		Utils.mandatroyInputCheck(projectId);
@@ -123,13 +126,35 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	/**
-	 *
+	 *Get all activate Projects. Projects with the flag isActive is true
 	 * @return
 	 */
+	@Override
 	public List<Project> getAllActiveProjects()
 	{
-		List<Project> projects = projectRepo.findByIsActive(true);
-		return projects;
+		return projectRepo.findByIsActive(true);
+	}
+
+	/**
+	 * Get the projects list which includes currently active projects as well as inActivated/Ended Projects
+	 * @return
+     */
+	@Override
+	public List<Project> getAllProjects(){
+		return projectRepo.findByIsActiveOrEndDateNotNull(true);
+	}
+
+	/**
+	 * Get Project Details by Id
+	 * @param id
+	 * @return
+	 * @throws InsufficientInputException
+     */
+	@Override
+	public Project getProject(Integer id) throws InsufficientInputException{
+
+		Utils.mandatroyInputCheck(id);
+		return projectRepo.findOne(id);
 	}
 
 	/**

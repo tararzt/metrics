@@ -2,12 +2,14 @@ package com.rzt.service;
 
 import com.rzt.exception.InsufficientInputException;
 import com.rzt.schemapojo.Project;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Service for Project Operations
  */
+@Service
 public interface ProjectService {
 
 	/**
@@ -48,5 +50,18 @@ public interface ProjectService {
 	 * @return
      */
 	public List<Project> getAllActiveProjects();
+
+	/**
+	 *Get the projects list which includes currently active projects as well as inActivated/Ended Projects
+	 * @return
+     */
+	public List<Project> getAllProjects();
+
+	/**
+	 * Get the project details
+	 * @param id
+	 * @return
+     */
+	public Project getProject(Integer id) throws InsufficientInputException;
 
 }

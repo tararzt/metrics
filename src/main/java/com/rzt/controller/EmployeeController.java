@@ -73,9 +73,9 @@ public class EmployeeController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping( value = "/employees", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET )
+	@RequestMapping( value = "/active-employees", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET )
 	@ResponseBody
-	public String getAllEmployees()
+	public String getAllActiveEmployees()
 	{
 		logger.info("Getting all Active Employees...");
 		APIResponse response = new APIResponse();
@@ -85,6 +85,32 @@ public class EmployeeController extends BaseController {
 			employees = employeeService.getActiveEmployees();
 			response.setData(employees);
 			logger.info("Getting all Active Employees completed.");
+		}
+		catch( Exception e )
+		{
+			handleGlobalException(response, e);
+		}
+		return jsonStringifyResponse(response);
+
+	}
+
+	/**
+	 * Get all Employees
+	 *
+	 * @return
+	 */
+	@RequestMapping( value = "/employees", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET )
+	@ResponseBody
+	public String getAllEmployees()
+	{
+		logger.info("Getting all Employees...");
+		APIResponse response = new APIResponse();
+		List<Employee> employees = null;
+		try
+		{
+			employees = employeeService.getAllEmployees();
+			response.setData(employees);
+			logger.info("Getting all Employees completed.");
 		}
 		catch( Exception e )
 		{
@@ -168,11 +194,37 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String deleteEmployee( @PathVariable Integer id )
 	{
-		logger.info("Inactivating an Employee with the Id " + id + " ...");
+		logger.info("Deleting an Employee with the Id " + id + " ...");
 		APIResponse response = new APIResponse();
 		try
 		{
 			response.setData(employeeService.delete(id));
+			logger.info("Deleting an Employee is Completed.");
+		}
+		catch( Exception e )
+		{
+			handleGlobalException(response, e);
+		}
+		return jsonStringifyResponse(response);
+
+	}
+
+	/**
+	 * delete Employee
+	 *
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping( value = "/inactivate/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.DELETE )
+	@ResponseBody
+	public String inActivateEmployee( @PathVariable Integer id )
+	{
+		logger.info("Inactivating an Employee with the Id " + id + " ...");
+		APIResponse response = new APIResponse();
+		try
+		{
+			response.setData(employeeService.inActivate(id));
 			logger.info("Inactivating an Employee is Completed.");
 		}
 		catch( Exception e )

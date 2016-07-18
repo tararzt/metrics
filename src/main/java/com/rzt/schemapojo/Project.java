@@ -1,13 +1,11 @@
 package com.rzt.schemapojo;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+/**
+ * Entity Pojo For project
+ */
 @Entity
 @Table( name = "project" )
 public class Project {
@@ -17,7 +15,7 @@ public class Project {
 	String client;
 	Date startDate;
 	Date endDate;
-	Float totalBilling;
+	float totalBilling;
 	Date createdDate;
 	Boolean isActive;
 
@@ -79,12 +77,12 @@ public class Project {
 	}
 
 	@Column( name = "total_billing" )
-	public Float getTotalBilling()
+	public float getTotalBilling()
 	{
 		return totalBilling;
 	}
 
-	public void setTotalBilling( Float billing )
+	public void setTotalBilling( float billing )
 	{
 		this.totalBilling = billing;
 	}

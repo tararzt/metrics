@@ -34,6 +34,13 @@ public interface EmployeeService {
 	public List<Employee> getActiveEmployees();
 
 	/**
+	 * Get list of  Employees
+	 *
+	 * @return
+	 */
+	public List<Employee> getAllEmployees();
+
+	/**
 	 * 
 	 * @param employee
 	 * @return
@@ -48,5 +55,13 @@ public interface EmployeeService {
 	 * @throws InsufficientInputException
 	 */
 	public Boolean delete( Integer employeeId ) throws InsufficientInputException;
+
+	/**
+	 *
+	 * @param employeeId
+	 * @return
+	 * @throws InsufficientInputException
+     */
+	public Boolean inActivate( Integer employeeId ) throws InsufficientInputException;
 
 }
