@@ -67,15 +67,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public Employee addEmployee( Employee employee ) throws InsufficientInputException
 	{
+
 		//Check for Mandatory Inputs
 		Utils.mandatroyInputCheck(employee);
 		Utils.mandatroyInputCheck(employee.getEmail());
+		logger.info("Adding a new Employee "+employee.getEmail());
+
 
 		Employee existingEmployee = employeeRepo.findByEmailAndIsActive(employee.getEmail(), true);
 		if( existingEmployee != null )
 			throw new ActionFailureException(ErrorCode.ACTIVE_EMPLOYEE_PRESENT);
 
 		employee.setCreatedDate(new Date());
+		logger.info("Adding a new Employee "+employee.getEmail()+" Completed.");
 		return employeeRepo.save(employee);
 	}
 
@@ -85,6 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public List<Employee> getActiveEmployees()
 	{
+		logger.info("Sending list of active employees.");
 		return employeeRepo.findByIsActive(true);
 	}
 
@@ -94,6 +99,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public List<Employee> getAllEmployees()
 	{
+		logger.info("Sending list of  employees.");
 		return employeeRepo.findAll();
 	}
 
@@ -108,6 +114,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		//Mandatory Input Check
 		Utils.mandatroyInputCheck(updatedEmployee);
 		Utils.mandatroyInputCheck(updatedEmployee.getId(), updatedEmployee.getEmail());
+		logger.info("Updating the details of employee "+updatedEmployee.getEmail());
 
 		//Check if the Employee to be updated is Present, if not throw an error message
 		Employee currentEmployee = employeeRepo.findOne(updatedEmployee.getId());
@@ -125,6 +132,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		}
 
+		logger.info("Updating the details of employee "+updatedEmployee.getEmail()+" completed.");
 		return employeeRepo.save(updatedEmployee);
 	}
 
@@ -139,6 +147,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Boolean isInActivated;
 		Utils.mandatroyInputCheck(employeeId);
 
+		logger.info("Inactivating an employee with the Id "+employeeId);
+
 		//Check if the Employee  is Present, if not throw an error message
 		Employee employee = employeeRepo.findOne(employeeId);
 		if( employee == null )
@@ -147,22 +157,48 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setIsActive(false);
 		employeeRepo.save(employee);
 		isInActivated = true;
+		logger.info("Inactivating an employee with the Id "+employeeId+" Completed");
 		return isInActivated;
 	}
 
+	/**
+	 * Delete an Employee
+	 * @param employeeId
+	 * @return
+	 * @throws InsufficientInputException
+     */
 	@Override
 	public Boolean delete(Integer employeeId) throws InsufficientInputException {
 		Utils.mandatroyInputCheck(employeeId);
 
+		logger.info("Deleting an employee with the Id "+employeeId);
 		//Check if the Employee  is Present, if not throw an error message
 		Employee employee = employeeRepo.findOne(employeeId);
 		if( employee == null )
 			throw new ActionFailureException(ErrorCode.USER_NOT_FOUND);
 
 		employeeRepo.delete(employee);
+		logger.info("Deleting an employee with the Id "+employeeId+ "completed.");
 
 		return true;
 
+	}
+
+	/**
+	 * Get an employee details
+	 * @param employeeId
+	 * @return
+	 * @throws InsufficientInputException
+     */
+	@Override
+	public Employee getEmployee(Integer employeeId) throws InsufficientInputException{
+		Utils.mandatroyInputCheck(employeeId);
+		logger.info("Getting Employee details of employeeId "+employeeId);
+		Employee employee = employeeRepo.findOne(employeeId);
+		if(employee == null)
+			throw new ActionFailureException(ErrorCode.USER_NOT_FOUND);
+		logger.info("Getting Employee details of employeeId "+employeeId+" Completed");
+		return employee;
 	}
 
 }

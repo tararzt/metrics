@@ -64,4 +64,12 @@ public interface EmployeeService {
      */
 	public Boolean inActivate( Integer employeeId ) throws InsufficientInputException;
 
+	/**
+	 *
+	 * @param employeeId
+	 * @return
+	 * @throws InsufficientInputException
+     */
+	public Employee getEmployee(Integer employeeId) throws InsufficientInputException;
+
 }

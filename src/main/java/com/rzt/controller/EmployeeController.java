@@ -44,13 +44,13 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String addEmployee( @RequestBody Employee employee )
 	{
-		logger.info("Adding a new Employee...");
+		logger.info("Received Request to Add a new Employee...");
 		APIResponse response = new APIResponse();
 		try
 		{
 			Employee employeeAdded = employeeService.addEmployee(employee);
 			response.setData(employeeAdded);
-			logger.info("Adding a new Employee " + employeeAdded.getEmail() + " is completed");
+			logger.info("Sending back the response to Add a new Employee");
 
 		}
 		catch( ActionFailureException e )
@@ -77,14 +77,14 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String getAllActiveEmployees()
 	{
-		logger.info("Getting all Active Employees...");
+		logger.info("Received Request to get all Active Employees...");
 		APIResponse response = new APIResponse();
 		List<Employee> employees = null;
 		try
 		{
 			employees = employeeService.getActiveEmployees();
 			response.setData(employees);
-			logger.info("Getting all Active Employees completed.");
+			logger.info("Sending back the response to get all Active employees");
 		}
 		catch( Exception e )
 		{
@@ -103,14 +103,15 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String getAllEmployees()
 	{
-		logger.info("Getting all Employees...");
+		logger.info("Received Request get all Employees...");
+
 		APIResponse response = new APIResponse();
 		List<Employee> employees = null;
 		try
 		{
 			employees = employeeService.getAllEmployees();
 			response.setData(employees);
-			logger.info("Getting all Employees completed.");
+			logger.info("logger.info(\"Sending back the response to get all employees");
 		}
 		catch( Exception e )
 		{
@@ -131,13 +132,13 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String updateEmployee( @RequestBody Employee employee )
 	{
-		logger.info("Updating Employee Deatils...");
+		logger.info("Received Request to update an Employee...");
 		APIResponse response = new APIResponse();
 		try
 		{
 			Employee updatedEmployee = employeeService.updateEmployee(employee);
 			response.setData(employee);
-			logger.info("Updating Employee " + updatedEmployee.getEmail() + " Deatils Completed.");
+			logger.info("Sending back the response to update new Employee reuqest");
 
 		}
 		catch( ActionFailureException e )
@@ -157,7 +158,7 @@ public class EmployeeController extends BaseController {
 	}
 
 	/**
-	 * Delete Employee
+	 * Get Employee details
 	 * 
 	 * @param id
 	 * @return
@@ -167,12 +168,13 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String getEmployee( @PathVariable Integer id )
 	{
+		logger.info("Received Request to get an employee details...");
 		APIResponse response = new APIResponse();
-		Employee employee = null;
 		try
 		{
-			employee = employeeRepo.findOne(id);
+			Employee employee =  employeeService.getEmployee(id);
 			response.setData(employee);
+			logger.info("Sending back the response to get employee details");
 
 		}
 		catch( Exception e )
@@ -194,12 +196,12 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String deleteEmployee( @PathVariable Integer id )
 	{
-		logger.info("Deleting an Employee with the Id " + id + " ...");
+		logger.info("Received Request to delete an Employee...");
 		APIResponse response = new APIResponse();
 		try
 		{
 			response.setData(employeeService.delete(id));
-			logger.info("Deleting an Employee is Completed.");
+			logger.info("Sending back the response to delete an Employee");
 		}
 		catch( Exception e )
 		{
@@ -220,12 +222,12 @@ public class EmployeeController extends BaseController {
 	@ResponseBody
 	public String inActivateEmployee( @PathVariable Integer id )
 	{
-		logger.info("Inactivating an Employee with the Id " + id + " ...");
+		logger.info("Received Request to inactivate an Employee...");
 		APIResponse response = new APIResponse();
 		try
 		{
 			response.setData(employeeService.inActivate(id));
-			logger.info("Inactivating an Employee is Completed.");
+			logger.info("Sending back the response to inActivat an Employee");
 		}
 		catch( Exception e )
 		{
