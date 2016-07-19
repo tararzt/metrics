@@ -1,6 +1,6 @@
 package com.rzt.controller;
 
-import java.util.List;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -39,8 +39,7 @@ public class ProjectController extends BaseController {
 		APIResponse response = new APIResponse();
 		try
 		{
-			Project createdProjet = projectService.addProject(project);
-			response.setData(createdProjet);
+			response.setData(projectService.addProject(project));
 			logger.info("Sending back the response for create new project request");
 		}
 		catch( ActionFailureException e )
@@ -76,8 +75,7 @@ public class ProjectController extends BaseController {
 
 		try
 		{
-			Project updatedProject = projectService.updateProject(project);
-			response.setData(updatedProject);
+			response.setData(projectService.updateProject(project));
 			logger.info("Sending back the response for update project request");
 
 		}
@@ -110,8 +108,7 @@ public class ProjectController extends BaseController {
 		APIResponse response = new APIResponse();
 		try
 		{
-			List<Project> projects = projectService.getAllProjects();
-			response.setData(projects);
+			response.setData(projectService.getAllProjects());
 			logger.info("Sending the response back for get all projects request");
 
 		}
@@ -137,8 +134,7 @@ public class ProjectController extends BaseController {
 
 		try
 		{
-			List<Project> activeProjects = projectService.getAllActiveProjects();
-			response.setData(activeProjects);
+			response.setData(projectService.getAllActiveProjects());
 			logger.info("Sending the response back for get all Active projects request");
 
 		}
@@ -162,8 +158,7 @@ public class ProjectController extends BaseController {
 		APIResponse response = new APIResponse();
 		try
 		{
-			Project project = projectService.getProject(id);
-			response.setData(project);
+			response.setData(projectService.getProject(id));
 			logger.info("Sending back the response for get Project Details");
 		}
 		catch( InsufficientInputException e )

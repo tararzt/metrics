@@ -136,8 +136,7 @@ public class EmployeeController extends BaseController {
 		APIResponse response = new APIResponse();
 		try
 		{
-			Employee updatedEmployee = employeeService.updateEmployee(employee);
-			response.setData(employee);
+			response.setData(employeeService.updateEmployee(employee));
 			logger.info("Sending back the response to update new Employee reuqest");
 
 		}

@@ -2,6 +2,8 @@ package com.rzt.service.impl;
 
 import java.util.Date;
 import java.util.List;
+
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rzt.dao.repository.ProjectRepo;
@@ -21,6 +23,8 @@ import com.rzt.utils.Utils;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
+	static final org.slf4j.Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
+
 	@Autowired
 	ProjectRepo projectRepo;
 
@@ -36,8 +40,11 @@ public class ProjectServiceImpl implements ProjectService {
 	{
 		Utils.mandatroyInputCheck(project);
 		Utils.mandatroyInputCheck(project.getName(), project.getClient());
+		logger.info("Adding a  new Project "+project.getName());
+
 		checkForDuplicateProject(project.getName(), project.getClient());
 		project.setCreatedDate(new Date());
+		logger.info("Adding a  new Project "+project.getName()+" Completed");
 		return projectRepo.save(project);
 
 	}
@@ -58,6 +65,7 @@ public class ProjectServiceImpl implements ProjectService {
 		String name = project.getName();
 		String client = project.getClient();
 		Utils.mandatroyInputCheck(name, client, project.getId());
+		logger.info(" Updating a project "+project.getName());
 
 		Project existingProject = projectRepo.findOne(project.getId());
 
@@ -91,12 +99,13 @@ public class ProjectServiceImpl implements ProjectService {
 	public Boolean deleteProject( Integer projectId ) throws InsufficientInputException
 	{
 		Utils.mandatroyInputCheck(projectId);
-
+		logger.info(" Deleting a Project with the Id "+projectId);
 		Project project = projectRepo.findOne(projectId);
 		if( project == null )
 			throw new ActionFailureException(ErrorCode.PROJECT_NOT_PRESENT);
 
 		projectRepo.delete(project);
+		logger.info(" Deleting a Project with the Id "+projectId+" Completed");
 
 		return true;
 
@@ -113,6 +122,8 @@ public class ProjectServiceImpl implements ProjectService {
 	public Boolean endProject( Integer projectId ) throws InsufficientInputException
 	{
 		Utils.mandatroyInputCheck(projectId);
+		logger.info(" Ending a Project with the Id "+projectId);
+
 
 		Project project = projectRepo.findOne(projectId);
 		if( project == null )
@@ -122,6 +133,8 @@ public class ProjectServiceImpl implements ProjectService {
 		project.setEndDate(new Date());
 
 		projectRepo.save(project);
+		logger.info(" Deleting a Project with the Id "+projectId+" completed");
+
 		return true;
 	}
 
@@ -154,7 +167,11 @@ public class ProjectServiceImpl implements ProjectService {
 	public Project getProject(Integer id) throws InsufficientInputException{
 
 		Utils.mandatroyInputCheck(id);
-		return projectRepo.findOne(id);
+		Project project = projectRepo.findOne(id);
+		if(project == null)
+			throw new ActionFailureException(ErrorCode.PROJECT_NOT_PRESENT);
+
+		return project;
 	}
 
 	/**
